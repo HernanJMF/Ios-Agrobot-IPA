@@ -6,7 +6,7 @@ const config: CapacitorConfig = {
   webDir: 'www',
   plugins: {
     CapacitorBrowser: {}
-  }
+  },
 };
 
 export default config;
