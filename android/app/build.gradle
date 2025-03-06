@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "es.agroseguro.chatbot"
+    namespace "com.agroseguro.chatdocumental"
     compileSdkVersion 34
     defaultConfig {
-        applicationId "es.agroseguro.chatbot"  // Confirma que esto es consistente
+        applicationId "com.agroseguro.chatdocumental"  // Confirma que esto es consistente
         minSdkVersion 22
         targetSdkVersion 34
-        versionCode 4 //La versión debe cambiarse cada vez que generamos el archivo .aab
-        versionName "1.0.5"
+        versionCode 7 //La versión debe cambiarse cada vez que generamos el archivo .aab
+        versionName "1.0.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

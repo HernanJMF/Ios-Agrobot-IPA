@@ -1,4 +1,4 @@
-package es.agroseguro.chatbot;
+package com.agroseguro.chatdocumental;
 
 import com.getcapacitor.BridgeActivity;
 

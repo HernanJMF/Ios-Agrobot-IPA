@@ -13,7 +13,6 @@ export class DocumentPreviewComponent  implements OnChanges  {
 
   constructor(private sanitizer: DomSanitizer) {}
 
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes['document'] && this.document && this.document.preview) {
       this.loadDocument();
