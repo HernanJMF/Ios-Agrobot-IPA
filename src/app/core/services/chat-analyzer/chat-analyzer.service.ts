@@ -17,7 +17,7 @@ export interface Message{
 })
 export class ChatAnalyzerService {
 
-  private wsSubject = this.websocketService.connect('https://2yqtyzdtf0.execute-api.eu-west-1.amazonaws.com/prod');
+  private wsSubject = this.websocketService.connect('https://kpgqjdhidh.execute-api.eu-west-1.amazonaws.com/prod');
   public messages: Subject<Message> = new Subject<Message>();
 
   constructor(
@@ -189,6 +189,6 @@ isConnected(): boolean {
 }
 
 reconnect() {
-  this.wsSubject = this.websocketService.connect('https://2yqtyzdtf0.execute-api.eu-west-1.amazonaws.com/prod');
+  this.wsSubject = this.websocketService.connect('https://kpgqjdhidh.execute-api.eu-west-1.amazonaws.com/prod');
 }
 }
