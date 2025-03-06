@@ -22,9 +22,9 @@
           <div class="summary">
             <p>
               {{ language === 'english' ?
-                'Hi! I am your Agrobot virtual assistant. Ask me a question based on the selected topic or document.'
+                'Hello! I am your Agrobot Assistant. If at any time my response does not meet your expectations, please request help to receive personalized attention.\n\nAsk me your question!'
                 :
-                "¡Hola! Soy tu asistente virtual Agrobot. Hazme una pregunta  basado en el tópico o documento seleccionado."
+                "¡Hola! Soy tu Asistente Virtual Agrobot. Si en algún momento mi respuesta no cumple con tus expectativas, solicita ayuda para recibir atención personalizada.\n\n!Hazme una pregunta!"
               }}
             </p>
 
@@ -35,17 +35,6 @@
             <button *ngIf="selectedDocument" (click)="showDocumentPreview()" class="document-button">
               📄 {{ selectedDocument.alias }}.{{ selectedDocument.extension }}
             </button>
-
-            <p *ngIf="selectedDocument">
-              del tópico:
-            </p>
-
-            <p *ngIf="topic_name && !selectedDocument">
-              Estás chateando con el tópico:
-            </p>
-            <p *ngIf="topic_name" class="document-button">
-               {{topic_name }}
-            </p>
 
             <!-- Modal de previsualización de documentos -->
             <p-dialog

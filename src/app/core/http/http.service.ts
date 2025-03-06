@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 export class HttpService {
 
   //Este servicio funciona para encapsular los tipos de peticiones y la logica pueda estar unicamente en los servicios
-  private baseUrl: string = "https://2yqtyzdtf0.execute-api.eu-west-1.amazonaws.com/prod" //Url prod
+  private baseUrl: string = "https://2yqtyzdtf0.execute-api.eu-west-1.amazonaws.com/prod" //environment.api_url
 
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),

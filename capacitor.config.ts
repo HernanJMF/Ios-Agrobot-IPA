@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.agroseguro.chatdocumental',
+  appId: 'es.agroseguro.chatbot',
   appName: 'Agroseguro Chatbot',
   webDir: 'www',
   plugins: {
