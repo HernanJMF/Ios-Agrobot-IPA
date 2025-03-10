@@ -8,6 +8,8 @@ import { LoadingService } from 'src/app/core/services/loading/loading-service.se
 import { MessageService } from 'src/app/core/services/messages/message.service';
 import { ToastNotification } from 'src/app/shared/types/ToastNotification';
 import { App } from '@capacitor/app';
+import { Capacitor } from '@capacitor/core';
+import { StatusBar } from '@capacitor/status-bar';
 
 
 export interface Reference {
@@ -117,6 +119,9 @@ export class ChatComponent  implements OnInit {
   }
 
   ngOnInit(): void {
+    if (Capacitor.getPlatform() === 'ios') {
+      document.body.style.paddingTop = 'env(safe-area-inset-top)';
+    }
 
       // Detectar cuando la app vuelve a primer plano
       document.addEventListener("visibilitychange", () => {

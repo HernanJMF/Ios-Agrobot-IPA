@@ -30,14 +30,21 @@
 
             <!-- Si hay un documento seleccionado, mostrar el botón -->
             <p *ngIf="selectedDocument">
-              Estás chateando con el documento:
-            </p>
+              {{ language === 'english' ?
+              'You are chatting with the document:'
+              :
+              "Estás chateando con el documento:"
+              }}            </p>
             <button *ngIf="selectedDocument" (click)="showDocumentPreview()" class="document-button">
               📄 {{ selectedDocument.alias }}.{{ selectedDocument.extension }}
             </button>
 
             <p class="mt-4" *ngIf="selectedDocument">
-              del tópico:
+              {{ language === 'english' ?
+              'of the topic:'
+              :
+              "del tópico:"
+              }}
             </p>
 
             <p *ngIf="topic_name && !selectedDocument">
@@ -295,7 +302,7 @@
                     <i class="pi pi-sign-out"></i>
                 </div>
                 <span class="label p-0">
-                    {{language == 'english' ? 'Sign out' : 'Cerrar Sesión'}}
+                    {{language == 'english' ? 'Sign out' : 'Cerrar sesión'}}
                 </span>
             </div>
         </div>
