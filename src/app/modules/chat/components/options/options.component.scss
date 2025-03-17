@@ -9,6 +9,8 @@
     display: inline-grid;
     padding: 16px;
     position: relative;
+    font-family: 'Montserrat Regular', sans-serif;
+
 
     .version-text {
       position: absolute;
@@ -19,6 +21,7 @@
       color: #087021;
       font-family: 'Montserrat Regular', sans-serif;
       font-weight: 300;
+      margin-bottom: 20px;
     }
 }
 
