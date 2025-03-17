@@ -298,6 +298,7 @@
         margin-top: 8px;
         display: flex;
         padding-bottom: env(safe-area-inset-bottom);
+        margin-bottom: -10px;
         .send-section{
             display: flex;
             align-items: center;
@@ -317,6 +318,7 @@
             background: #eceeef;
             border-top-left-radius: 20px;
             border-bottom-left-radius: 20px;
+            padding: 10px;
             .characters {
                 position: absolute;
                 color: #979797;
