@@ -7,9 +7,13 @@ import { ChatService } from 'src/app/core/services/chat/chat.service';
 import { LoadingService } from 'src/app/core/services/loading/loading-service.service';
 import { MessageService } from 'src/app/core/services/messages/message.service';
 import { ToastNotification } from 'src/app/shared/types/ToastNotification';
-import { App } from '@capacitor/app';
 import { Capacitor } from '@capacitor/core';
 import { StatusBar } from '@capacitor/status-bar';
+import { App } from '@capacitor/app';
+import { ScreenReader } from '@capacitor/screen-reader';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
+import { BackgroundMode } from '@awesome-cordova-plugins/background-mode/ngx';
 
 
 export interface Reference {
@@ -83,11 +87,11 @@ export class ChatComponent  implements OnInit {
   isWaitingForResponse: boolean = false;
   responseTimer: any;
   lastMessage: string = "";
-
+  showReconnectModal: boolean = false;
 
   private keepAliveInterval: any;
   private lastEventWasKeepAlive: boolean = false;
-
+  private wasConnectedBefore: boolean = false;
 
   @Input() topic: string = "";
   @Input() language: string = "";
@@ -112,6 +116,7 @@ export class ChatComponent  implements OnInit {
     private messageService: MessageService,
     private loadingService: LoadingService,
     private chatAnalyzerService: ChatAnalyzerService,
+    private backgroundMode: BackgroundMode
 
   ) {
     this.resetForm();
@@ -119,22 +124,45 @@ export class ChatComponent  implements OnInit {
   }
 
   ngOnInit(): void {
+
     if (Capacitor.getPlatform() === 'ios') {
       document.body.style.paddingTop = 'env(safe-area-inset-top)';
     }
 
-      // Detectar cuando la app vuelve a primer plano
-      document.addEventListener("visibilitychange", () => {
-        if (!document.hidden) {
-          this.reconnectWebSocketIfNeeded();
-        }
-      });
+    this.chatAnalyzerService.isConnected$.subscribe((connected: boolean) => {
+      if (!connected) {
+        this.showReconnectModal = true; // Muestra el modal cuando se pierde la conexión
+      }
+    });
 
-      App.addListener("appStateChange", (state) => {
-        if (state.isActive) {
-          this.reconnectWebSocketIfNeeded();
+    this.backgroundMode.enable();
+    // Detectar cuando la app vuelve a primer plano o la pantalla se enciende
+    App.addListener("appStateChange", (state) => {
+      if (state.isActive) {
+        this.reconnectWebSocketIfNeeded();
+
+        if (!this.chatAnalyzerService.isConnected()) {
+          this.chatAnalyzerService.reconnect();
+        } else {
         }
-      });
+      }
+    });
+
+    // Manejar cuando la pantalla se enciende
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) {
+        if (!this.chatAnalyzerService.isConnected()) {
+          this.chatAnalyzerService.reconnect();
+        }
+      }
+    });
+    // 🔹 Detectar cuando el usuario toca la pantalla después de estar apagada
+    ScreenReader.isEnabled().then(() => {
+        document.addEventListener("touchstart", () => {
+            this.reconnectWebSocketIfNeeded();
+        });
+    });
+
 
     this.chatAnalyzerService.messages.subscribe({
         next: (msg: Message) => {
@@ -222,25 +250,37 @@ export class ChatComponent  implements OnInit {
         error: (err) => console.error('Error en chat:', err)
     });
     this.startKeepAlive();
-    //CODIGO FUNCIONAL OJO ------------ZZZZZZZZZZZZZZZZZZZZZZ
+
+  }
+
+  reloadApp() {
+    console.warn("🔄 Recargando la aplicación por desconexión...");
+    window.location.reload();
   }
 
   startKeepAlive() {
     if (this.keepAliveInterval) {
-        clearInterval(this.keepAliveInterval); // Limpia intervalos previos si existen
+        clearInterval(this.keepAliveInterval); // 🔹 Evitar múltiples intervalos activos
     }
 
     this.keepAliveInterval = setInterval(() => {
-        this.chatAnalyzerService.sendMessage({ action: "ping" });
-    }, 1 * 60 * 1000);
+        if (this.chatAnalyzerService.isConnected()) {
+            this.chatAnalyzerService.sendMessage({
+                action: "sendMessage", //
+                message: "ping"
+            });
+        } else {
+            this.chatAnalyzerService.reconnect();
+        }
+    }, 4 * 60 * 1000); // 🔹 Cada 4 minutos
   }
 
-  reconnectWebSocketIfNeeded() {
-    if (!this.chatAnalyzerService.isConnected()) {
-      this.chatAnalyzerService.reconnect();
-    } else {
+    reconnectWebSocketIfNeeded() {
+      if (!this.chatAnalyzerService.isConnected()) {
+        console.warn("🔄 Reconectando WebSocket...");
+        this.chatAnalyzerService.reconnect();
+      }
     }
-  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['selectedDocument'] && this.selectedDocument) {
@@ -260,6 +300,12 @@ export class ChatComponent  implements OnInit {
 }
 
 sendMessage() {
+
+  if (!this.chatAnalyzerService.isConnected()) { // ✅ Llamamos desde el servicio
+    console.warn("⚠️ WebSocket desconectado, reconectando antes de enviar el mensaje...");
+    this.chatAnalyzerService.reconnect(); // ✅ Llamamos desde el servicio
+  }
+
   if (!this.chatMessage.trim()) {
     return;
   }
@@ -448,6 +494,14 @@ sendMessage() {
 
   logout(){
     this.chatService.logout();
+  }
+
+  formatMessage(message: string): string {
+    if (!message) return "";
+
+    let cleanedMessage = message.replace(/\n{2,}/g, "\n").trim();
+    let html = marked.parse(cleanedMessage) as string; // ✅ Forzar como string si es seguro
+    return DOMPurify.sanitize(html);
   }
 
   placeholderText(){

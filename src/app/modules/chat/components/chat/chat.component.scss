@@ -7,12 +7,13 @@
 
 .user-bar{
     background: #087021;
-    height: 55px;
+    min-height: calc(55px + env(safe-area-inset-top)); // Ajuste dinámico para notch
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0px 16px 0px 0px;
     color: #f5f5f5;
+    padding-top: env(safe-area-inset-top);
     .icon-section{
         margin-left: 16px;
         display: flex;
@@ -95,6 +96,10 @@
     flex-direction: column;
     justify-content: space-between;
     display: flex;
+    flex-grow: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; // Permite scroll suave en iOS
+    padding-bottom: env(safe-area-inset-bottom); // Respeta el área segura en iOS
 
     .scroll-section{
         overflow-y: auto;
@@ -292,6 +297,7 @@
         position: relative;
         margin-top: 8px;
         display: flex;
+        padding-bottom: env(safe-area-inset-bottom);
         .send-section{
             display: flex;
             align-items: center;

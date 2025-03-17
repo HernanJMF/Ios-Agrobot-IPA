@@ -48,8 +48,12 @@
             </p>
 
             <p *ngIf="topic_name && !selectedDocument">
-              Estás chateando con el tópico:
-            </p>
+              {{ language === 'english' ?
+              'You are chatting with the topic:'
+              :
+              "Estás chateando con el tópico:"
+              }}
+              </p>
             <p *ngIf="topic_name" class="document-button">
                {{topic_name }}
             </p>
@@ -183,6 +187,50 @@
 
   </div>
 </div>
+
+  <!------------RECONNECTION SECTION START------------>
+    <p-dialog [(visible)]="showReconnectModal"
+    [style]="{width: '50vw'}"
+    class="modal-section"
+    [breakpoints]="{ '768px': '80vw', '576px': '95vw'}"
+    [draggable]="false"
+    [modal]="true"
+    [resizable]="false"
+    [closeOnEscape]="false"
+    [closable]="false">
+    <ng-template pTemplate="header">
+    <div class="d-flex justify-content-center w-100">
+        <span class="modal-section-title">
+            {{ language === 'english' ? 'Connection lost' : 'Conexión perdida' }}
+        </span>
+    </div>
+    </ng-template>
+
+    <div class="p-3 text-center">
+    <p>
+        {{ language === 'english' ?
+            'The connection has been lost. Please reload the application to continue.' :
+            'Se ha perdido la conexión. Por favor, recarga la aplicación para continuar.'
+        }}
+    </p>
+    </div>
+
+    <ng-template pTemplate="footer">
+    <div class="d-flex justify-content-center align-items-center">
+        <p-button pRipple
+                [label]="language === 'english' ? 'Reload' : 'Recargar'"
+                class=" p-button-text"
+                [text]="true"
+                [rounded]="true"
+                (click)="reloadApp()">
+        </p-button>
+    </div>
+    </ng-template>
+  </p-dialog>
+
+
+
+  <!------------RECONNECTION SECTION END------------>
 
 
 <!------------CREATE TICKET SECTION START------------>

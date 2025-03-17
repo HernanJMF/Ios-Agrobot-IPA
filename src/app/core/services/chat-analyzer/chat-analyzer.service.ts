@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs';
 import { HttpService } from 'src/app/core/http/http.service';
@@ -17,8 +17,9 @@ export interface Message{
 })
 export class ChatAnalyzerService {
 
-  private wsSubject = this.websocketService.connect('https://kpgqjdhidh.execute-api.eu-west-1.amazonaws.com/prod');
+  private wsSubject = this.websocketService.connect('wss://kpgqjdhidh.execute-api.eu-west-1.amazonaws.com/prod');
   public messages: Subject<Message> = new Subject<Message>();
+  public isConnected$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true); // Estado de conexión
 
   constructor(
     private configService: ConfigService,
@@ -27,40 +28,63 @@ export class ChatAnalyzerService {
     private websocketService: WebsocketService,
 
   ) {
-      // Suscribirse a la conexión WebSocket para transformar los mensajes entrantes
-      this.wsSubject
-      .pipe(
+    this.connectWebSocket();
+    }
+
+    private connectWebSocket() {
+
+      this.wsSubject = this.websocketService.connect(
+        'wss://kpgqjdhidh.execute-api.eu-west-1.amazonaws.com/prod'
+      );
+
+      this.wsSubject.pipe(
         map((event: MessageEvent) => {
           const data = JSON.parse(event.data);
 
-          // 🔹 Si el mensaje es una respuesta de "ping", lo ignoramos completamente
-          if (!data || data.message === "ping") {
-            return null; // 👈 Retornamos `null` para que no pase al `subscribe`
+          if (!data || data.message === 'ping') {
+            return null;
           }
 
-
           return {
-            action: data.stop_reason || "default",
-            message: data.completion || "", // Evitamos `NaN`
-            references: data.references || undefined
+            action: data.stop_reason || 'default',
+            message: data.completion || '',
+            references: data.references || undefined,
           } as Message;
         })
-      )
-      .subscribe({
+      ).subscribe({
         next: (msg: Message | null) => {
-          if (!msg) return; // Evita que los `null` sean procesados
-
+          if (!msg) return;
+          this.isConnected$.next(true); // Mantiene la conexión activa
           this.messages.next(msg);
         },
-        error: (err) => console.error(" Error en WebSocket:", err),
-        complete: () => console.log(" Conexión WebSocket cerrada")
+        error: (err) => {
+          this.isConnected$.next(false); // Perdió conexión
+        },
+        complete: () => {
+          this.isConnected$.next(false);
+        },
       });
-
     }
 
-    // Método para enviar mensajes al backend
     public sendMessage(message: any): void {
-      this.wsSubject.next(message);
+      if (!this.isConnected()) {
+        this.reconnect();
+      }
+      this.wsSubject?.next(message);
+    }
+
+    isConnected(): boolean {
+      return this.wsSubject !== null && !this.wsSubject.closed;
+    }
+
+    public reconnect() {
+      console.warn('♻️ Intentando reconectar WebSocket...');
+
+      if (this.wsSubject && !this.wsSubject.closed) {
+        this.wsSubject.complete();
+      }
+
+      this.connectWebSocket();
     }
 
 
@@ -184,11 +208,4 @@ export class ChatAnalyzerService {
       );
 }
 
-isConnected(): boolean {
-  return this.wsSubject && !this.wsSubject.closed;
-}
-
-reconnect() {
-  this.wsSubject = this.websocketService.connect('https://kpgqjdhidh.execute-api.eu-west-1.amazonaws.com/prod');
-}
 }
