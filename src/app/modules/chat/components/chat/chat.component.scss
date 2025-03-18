@@ -293,6 +293,29 @@
 
     }
 
+    ::ng-deep{
+      .bot-message-box table {
+        max-width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        overflow-x: auto;
+        display: block;
+      }
+
+
+      .bot-message-box th,
+      .bot-message-box td {
+        border: 2px solid #f4f4f4;
+        padding: 8px;
+        text-align: left;
+      }
+
+      .bot-message-box th {
+        background-color: #f4f4f4;
+      }
+
+    }
+
     .input-section{
         position: relative;
         margin-top: 8px;
