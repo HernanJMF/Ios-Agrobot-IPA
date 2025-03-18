@@ -110,7 +110,7 @@
                                 (click)="copyQuestionToClipboard(message.message,i)">
                             </i>
                         </div>
-                        <span>{{message.message}}</span>
+                        <span [innerHTML]="message.talker === 'AI' ? formatMessage(message.message) : message.message">{{message.message}}</span>
                         <div *ngIf="message.talker == 'AI' && message.references && message.references.length > 0 && !message.isStreaming">
                           <div class="info-title"><span><strong>{{ language === 'english' ? 'More information:\n' : '\n Más Información:\n' }}</strong></span></div>
                           <div class="row m-0">

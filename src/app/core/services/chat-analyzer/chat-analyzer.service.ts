@@ -20,6 +20,7 @@ export class ChatAnalyzerService {
   private wsSubject = this.websocketService.connect('wss://kpgqjdhidh.execute-api.eu-west-1.amazonaws.com/prod');
   public messages: Subject<Message> = new Subject<Message>();
   public isConnected$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true); // Estado de conexión
+  private checkInterval: any;
 
   constructor(
     private configService: ConfigService,
@@ -29,10 +30,10 @@ export class ChatAnalyzerService {
 
   ) {
     this.connectWebSocket();
+    this.monitorConnection();
     }
 
     private connectWebSocket() {
-
       this.wsSubject = this.websocketService.connect(
         'wss://kpgqjdhidh.execute-api.eu-west-1.amazonaws.com/prod'
       );
@@ -40,11 +41,7 @@ export class ChatAnalyzerService {
       this.wsSubject.pipe(
         map((event: MessageEvent) => {
           const data = JSON.parse(event.data);
-
-          if (!data || data.message === 'ping') {
-            return null;
-          }
-
+          if (!data || data.message === 'ping') return null;
           return {
             action: data.stop_reason || 'default',
             message: data.completion || '',
@@ -54,11 +51,11 @@ export class ChatAnalyzerService {
       ).subscribe({
         next: (msg: Message | null) => {
           if (!msg) return;
-          this.isConnected$.next(true); // Mantiene la conexión activa
+          this.isConnected$.next(true);
           this.messages.next(msg);
         },
-        error: (err) => {
-          this.isConnected$.next(false); // Perdió conexión
+        error: () => {
+          this.isConnected$.next(false);
         },
         complete: () => {
           this.isConnected$.next(false);
@@ -78,15 +75,19 @@ export class ChatAnalyzerService {
     }
 
     public reconnect() {
-      console.warn('♻️ Intentando reconectar WebSocket...');
-
       if (this.wsSubject && !this.wsSubject.closed) {
         this.wsSubject.complete();
       }
-
       this.connectWebSocket();
     }
 
+    private monitorConnection() {
+      this.checkInterval = setInterval(() => {
+        if (!this.isConnected()) {
+          this.reconnect();
+        }
+      }, 10000); // Cada 10 segundos
+    }
 
   //se utiliza para obtener la informacion necesaria de un documento para realizar la conexion con el websocket
   GetDocument(documentID: string, type: string, userEmail: string = ""): Observable<any> {
