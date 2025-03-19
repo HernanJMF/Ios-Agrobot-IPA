@@ -1,7 +1,7 @@
 @import "../../../../../assets/styles/base/common-styles/overlay/overlay.scss";
 @import '../../../../../assets/styles/constants/fonts.scss';
 
-.user-bar{
+.user-bar {
   background: #087021;
   min-height: calc(55px + env(safe-area-inset-top));
   position: fixed;
@@ -16,6 +16,8 @@
   padding: env(safe-area-inset-top) 16px 0 0;
   width: 100%;
   will-change: transform;
+  transform: translateZ(0);
+
   .icon-section{
       margin-left: 16px;
       display: flex;

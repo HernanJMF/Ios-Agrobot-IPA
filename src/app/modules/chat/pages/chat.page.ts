@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { ChatAnalyzerService } from 'src/app/core/services/chat-analyzer/chat-analyzer.service';
 import { UserService } from 'src/app/core/services/users/user.service';
+import { Capacitor } from '@capacitor/core';
+import { Keyboard } from '@capacitor/keyboard';
 
 @Component({
   selector: 'app-chat-page',
@@ -43,6 +45,18 @@ export class ChatPage implements OnInit {
   }
 
   ngOnInit(): void {
+    if (Capacitor.getPlatform() === 'ios') {
+      Keyboard.addListener('keyboardDidShow', () => {
+        document.body.style.position = 'fixed'; // 🔥 Evita el movimiento
+        document.body.style.bottom = '0'; // 🔥 Asegura que todo esté bien alineado
+      });
+
+      Keyboard.addListener('keyboardDidHide', () => {
+        document.body.style.position = ''; // 🔥 Restablece el estado normal
+        document.body.style.bottom = '';
+      });
+    }
+
     this.innerWidth = window.innerWidth;
     if (this.innerWidth < 768) {
       this.step = 1;
