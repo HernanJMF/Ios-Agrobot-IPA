@@ -2,7 +2,11 @@
 @import '../../../../../assets/styles/constants/fonts.scss';
 
 .chat-section {
-    height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-top: calc(55px + env(safe-area-inset-top)); /* Ajusta el espacio de la user-bar */
 }
 
 .user-bar{

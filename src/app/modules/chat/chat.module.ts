@@ -21,6 +21,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import {AccordionModule} from 'primeng/accordion';
 import { TableModule } from 'primeng/table';
 import { DocumentPreviewComponent } from './components/document-preview/document-preview.component';
+import { UserBarComponent } from './components/user-bar/user-bar.component';
 
 @NgModule({
   imports: [
@@ -41,6 +42,6 @@ import { DocumentPreviewComponent } from './components/document-preview/document
     TableModule
 
   ],
-  declarations: [ChatPage, ChatComponent, OptionsComponent, DocumentPreviewComponent]
+  declarations: [ChatPage, ChatComponent, OptionsComponent, DocumentPreviewComponent, UserBarComponent]
 })
 export class ChatPageModule {}
