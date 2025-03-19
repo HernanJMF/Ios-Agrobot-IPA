@@ -3,7 +3,7 @@
 
 .user-bar {
   background: #087021;
-  min-height: 55px; // 🔹 NO uses `calc(55px + env(safe-area-inset-top))`
+  min-height: 70px; // 🔹 NO uses `calc(55px + env(safe-area-inset-top))`
   position: absolute; // 🔹 Cambiamos a absolute para evitar el problema
   top: 0;
   left: 0;

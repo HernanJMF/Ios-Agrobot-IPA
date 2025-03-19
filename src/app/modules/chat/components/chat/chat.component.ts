@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClipboardService } from 'ngx-clipboard';
 import { ChatAnalyzerService } from 'src/app/core/services/chat-analyzer/chat-analyzer.service';
@@ -88,6 +88,7 @@ export class ChatComponent  implements OnInit {
   responseTimer: any;
   lastMessage: string = "";
   showReconnectModal: boolean = false;
+  isKeyboardOpen = false;
 
   private keepAliveInterval: any;
   private lastEventWasKeepAlive: boolean = false;
@@ -251,6 +252,21 @@ export class ChatComponent  implements OnInit {
     });
     this.startKeepAlive();
 
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    const newHeight = window.innerHeight;
+    const initialHeight = screen.height;
+
+    // Si el tamaño de la ventana se reduce significativamente, el teclado está abierto
+    this.isKeyboardOpen = newHeight < initialHeight * 0.75;
+
+    if (this.isKeyboardOpen) {
+      document.body.classList.add('keyboard-is-open');
+    } else {
+      document.body.classList.remove('keyboard-is-open');
+    }
   }
 
   reloadApp() {

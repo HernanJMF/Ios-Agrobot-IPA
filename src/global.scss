@@ -45,7 +45,23 @@ html, body {
   -webkit-overflow-scrolling: touch;
 }
 
+app-user-bar {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  width: 100%;
+  background: #087021;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
 .keyboard-is-open app-user-bar {
   position: fixed !important;
   top: 0 !important;
+}
+
+.keyboard-is-open .chat-body {
+  padding-bottom: 100px; // Ajusta para que no se superponga el input de texto
 }
