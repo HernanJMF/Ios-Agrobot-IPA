@@ -44,3 +44,9 @@ html, body {
   touch-action: manipulation; // Previene deslizamientos inesperados
   -webkit-overflow-scrolling: touch;
 }
+
+.keyboard-is-open .user-bar {
+  position: absolute !important; // 🔥 Forzamos a que se quede fijo
+  top: 0 !important;
+  width: 100%;
+}

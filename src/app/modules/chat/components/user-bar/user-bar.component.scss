@@ -3,8 +3,8 @@
 
 .user-bar {
   background: #087021;
-  min-height: calc(55px + env(safe-area-inset-top));
-  position: fixed;
+  min-height: 55px; // 🔹 NO uses `calc(55px + env(safe-area-inset-top))`
+  position: absolute; // 🔹 Cambiamos a absolute para evitar el problema
   top: 0;
   left: 0;
   right: 0;
@@ -13,10 +13,11 @@
   align-items: center;
   justify-content: space-between;
   color: #f5f5f5;
-  padding: env(safe-area-inset-top) 16px 0 0;
+  padding-top: env(safe-area-inset-top);
   width: 100%;
   will-change: transform;
-  transform: translateZ(0);
+  transform: translateZ(0); // 🔥 Forzar a que no se mueva
+  height: auto; // 🔥 Para que no haya ajuste raro en iOS
 
   .icon-section{
       margin-left: 16px;
