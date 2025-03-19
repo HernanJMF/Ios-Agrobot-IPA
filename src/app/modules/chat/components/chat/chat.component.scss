@@ -8,7 +8,7 @@
 .user-bar{
     background: #087021;
     min-height: calc(55px + env(safe-area-inset-top));
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     right: 0;
