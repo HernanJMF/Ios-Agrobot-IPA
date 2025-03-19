@@ -7,13 +7,17 @@
 
 .user-bar{
     background: #087021;
-    min-height: calc(55px + env(safe-area-inset-top)); // Ajuste dinámico para notch
+    min-height: calc(55px + env(safe-area-inset-top));
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0px 16px 0px 0px;
     color: #f5f5f5;
-    padding-top: env(safe-area-inset-top);
+    padding: env(safe-area-inset-top) 16px 0 0;
     .icon-section{
         margin-left: 16px;
         display: flex;
@@ -92,14 +96,15 @@
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
-    height: calc(-56px + 100%);
+    height: calc(100vh - (55px + env(safe-area-inset-top)));
     flex-direction: column;
     justify-content: space-between;
     display: flex;
     flex-grow: 1;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch; // Permite scroll suave en iOS
-    padding-bottom: env(safe-area-inset-bottom); // Respeta el área segura en iOS
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-top: calc(55px + env(safe-area-inset-top));
 
     .scroll-section{
         overflow-y: auto;
@@ -112,6 +117,7 @@
         line-height: 16px;
         margin-bottom: 24px;
         font-size: 14px;
+        margin-top: calc(55px + env(safe-area-inset-top));
         .modal-header {
           display: block;
           align-items: center;
@@ -293,7 +299,7 @@
 
     }
 
-    ::ng-deep{
+      ::ng-deep{
       .bot-message-box table {
         max-width: 100%;
         border-collapse: collapse;
@@ -315,6 +321,7 @@
       }
 
     }
+
 
     .input-section{
         position: relative;

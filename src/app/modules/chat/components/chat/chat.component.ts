@@ -125,6 +125,10 @@ export class ChatComponent  implements OnInit {
 
   ngOnInit(): void {
 
+    if (Capacitor.getPlatform() === 'ios') {
+      document.body.style.paddingTop = 'env(safe-area-inset-top)';
+    }
+
     this.chatAnalyzerService.isConnected$.subscribe((connected: boolean) => {
       if (!connected) {
         this.showReconnectModal = true; // Muestra el modal cuando se pierde la conexión
@@ -135,8 +139,11 @@ export class ChatComponent  implements OnInit {
     // Detectar cuando la app vuelve a primer plano o la pantalla se enciende
     App.addListener("appStateChange", (state) => {
       if (state.isActive) {
+        this.reconnectWebSocketIfNeeded();
+
         if (!this.chatAnalyzerService.isConnected()) {
           this.chatAnalyzerService.reconnect();
+        } else {
         }
       }
     });
@@ -151,12 +158,9 @@ export class ChatComponent  implements OnInit {
     });
     // 🔹 Detectar cuando el usuario toca la pantalla después de estar apagada
     ScreenReader.isEnabled().then(() => {
-      document.addEventListener("touchstart", () => {
-        console.log("👆 Pantalla tocada, verificando WebSocket...");
-        if (!this.chatAnalyzerService.isConnected()) {
-          this.chatAnalyzerService.reconnect();
-        }
-      });
+        document.addEventListener("touchstart", () => {
+            this.reconnectWebSocketIfNeeded();
+        });
     });
 
 
@@ -250,20 +254,25 @@ export class ChatComponent  implements OnInit {
   }
 
   reloadApp() {
+    console.warn("🔄 Recargando la aplicación por desconexión...");
     window.location.reload();
   }
 
   startKeepAlive() {
-    setInterval(() => {
-      if (this.chatAnalyzerService.isConnected()) {
-        this.chatAnalyzerService.sendMessage({
-          action: "sendMessage",
-          message: "ping"
-        });
-      } else {
-        this.chatAnalyzerService.reconnect();
-      }
-      }, 8 * 60 * 1000); //  Cada 8 minutos
+    if (this.keepAliveInterval) {
+        clearInterval(this.keepAliveInterval); // 🔹 Evitar múltiples intervalos activos
+    }
+
+    this.keepAliveInterval = setInterval(() => {
+        if (this.chatAnalyzerService.isConnected()) {
+            this.chatAnalyzerService.sendMessage({
+                action: "sendMessage", //
+                message: "ping"
+            });
+        } else {
+            this.chatAnalyzerService.reconnect();
+        }
+    }, 4 * 60 * 1000); // 🔹 Cada 4 minutos
   }
 
     reconnectWebSocketIfNeeded() {
@@ -293,6 +302,7 @@ export class ChatComponent  implements OnInit {
 sendMessage() {
 
   if (!this.chatAnalyzerService.isConnected()) { // ✅ Llamamos desde el servicio
+    console.warn("⚠️ WebSocket desconectado, reconectando antes de enviar el mensaje...");
     this.chatAnalyzerService.reconnect(); // ✅ Llamamos desde el servicio
   }
 
