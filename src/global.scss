@@ -45,8 +45,7 @@ html, body {
   -webkit-overflow-scrolling: touch;
 }
 
-.keyboard-is-open .user-bar {
-  position: absolute !important; // 🔥 Forzamos a que se quede fijo
+.keyboard-is-open app-user-bar {
+  position: fixed !important;
   top: 0 !important;
-  width: 100%;
 }

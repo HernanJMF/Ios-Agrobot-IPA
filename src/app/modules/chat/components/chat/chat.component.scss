@@ -9,6 +9,18 @@
   padding-top: calc(55px + env(safe-area-inset-top)); /* Ajusta el espacio de la user-bar */
 }
 
+app-user-bar {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  width: 100%;
+  background: #087021;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
 .user-bar{
     background: #087021;
     min-height: calc(55px + env(safe-area-inset-top));
