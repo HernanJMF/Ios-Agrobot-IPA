@@ -324,12 +324,13 @@
 
 
     .input-section{
-        position: relative;
-        margin-top: 8px;
-        display: flex;
-        padding-bottom: env(safe-area-inset-bottom);
-        padding-bottom: 0px;
-        margin-bottom: 64px;
+      position: fixed;
+      bottom: env(safe-area-inset-bottom); // 🔹 Respeta el área segura en iOS
+      left: 0;
+      right: 0;
+      background: white; // O el color de fondo que prefieras
+      display: flex;
+      padding: 8px;
 
         .send-section{
             display: flex;
