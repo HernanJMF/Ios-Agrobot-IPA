@@ -88,7 +88,6 @@ export class ChatComponent  implements OnInit {
   responseTimer: any;
   lastMessage: string = "";
   showReconnectModal: boolean = false;
-  isKeyboardOpen = false;
 
   private keepAliveInterval: any;
   private lastEventWasKeepAlive: boolean = false;
@@ -125,10 +124,6 @@ export class ChatComponent  implements OnInit {
   }
 
   ngOnInit(): void {
-
-    if (Capacitor.getPlatform() === 'ios') {
-      document.body.style.paddingTop = 'env(safe-area-inset-top)';
-    }
 
     this.chatAnalyzerService.isConnected$.subscribe((connected: boolean) => {
       if (!connected) {
@@ -254,42 +249,23 @@ export class ChatComponent  implements OnInit {
 
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    const newHeight = window.innerHeight;
-    const initialHeight = screen.height;
-
-    // Si el tamaño de la ventana se reduce significativamente, el teclado está abierto
-    this.isKeyboardOpen = newHeight < initialHeight * 0.75;
-
-    if (this.isKeyboardOpen) {
-      document.body.classList.add('keyboard-is-open');
-    } else {
-      document.body.classList.remove('keyboard-is-open');
-    }
-  }
-
   reloadApp() {
     console.warn("🔄 Recargando la aplicación por desconexión...");
     window.location.reload();
   }
 
   startKeepAlive() {
-    if (this.keepAliveInterval) {
-        clearInterval(this.keepAliveInterval); // 🔹 Evitar múltiples intervalos activos
+    setInterval(() => {
+      if (this.chatAnalyzerService.isConnected()) {
+        this.chatAnalyzerService.sendMessage({
+          action: "sendMessage",
+          message: "ping"
+        });
+      } else {
+        this.chatAnalyzerService.reconnect();
+      }
+      }, 8 * 60 * 1000); //  Cada 8 minutos
     }
-
-    this.keepAliveInterval = setInterval(() => {
-        if (this.chatAnalyzerService.isConnected()) {
-            this.chatAnalyzerService.sendMessage({
-                action: "sendMessage", //
-                message: "ping"
-            });
-        } else {
-            this.chatAnalyzerService.reconnect();
-        }
-    }, 4 * 60 * 1000); // 🔹 Cada 4 minutos
-  }
 
     reconnectWebSocketIfNeeded() {
       if (!this.chatAnalyzerService.isConnected()) {

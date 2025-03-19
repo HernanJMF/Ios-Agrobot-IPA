@@ -3,37 +3,16 @@
 
 .chat-section {
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  padding-top: calc(55px + env(safe-area-inset-top)); /* Ajusta el espacio de la user-bar */
 }
-
-app-user-bar {
-  position: fixed !important;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  width: 100%;
-  background: #087021;
-  will-change: transform;
-  transform: translateZ(0);
-}
-
 .user-bar{
     background: #087021;
     min-height: calc(55px + env(safe-area-inset-top));
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0px 16px 0px 0px;
     color: #f5f5f5;
-    padding: env(safe-area-inset-top) 16px 0 0;
+    padding-top: env(safe-area-inset-top);
     width: 100%;
     will-change: transform;
     .icon-section{
@@ -114,15 +93,14 @@ app-user-bar {
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
-    height: calc(100vh - (55px + env(safe-area-inset-top) + env(safe-area-inset-bottom)));
+    height: calc(-56px + 100%);
     flex-direction: column;
     justify-content: space-between;
     display: flex;
     flex-grow: 1;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: env(safe-area-inset-bottom);
-    padding-top: calc(55px + env(safe-area-inset-top));
+    -webkit-overflow-scrolling: touch; // Permite scroll suave en iOS
+    padding-bottom: env(safe-area-inset-bottom); // Respeta el área segura en iOS
 
     .scroll-section{
         overflow-y: auto;
@@ -135,7 +113,6 @@ app-user-bar {
         line-height: 16px;
         margin-bottom: 24px;
         font-size: 14px;
-        margin-top: calc(55px + env(safe-area-inset-top));
         .modal-header {
           display: block;
           align-items: center;
@@ -342,15 +319,12 @@ app-user-bar {
 
 
     .input-section{
-      position: fixed;
-      bottom: env(safe-area-inset-bottom); // 🔹 Respeta el área segura en iOS
-      left: 0;
-      right: 0;
-      background: white; // O el color de fondo que prefieras
+      position: relative;
+      margin-top: 8px;
       display: flex;
-      padding: 8px;
       padding-bottom: env(safe-area-inset-bottom);
-
+      padding-bottom: 0px;
+      margin-bottom: 64px;
         .send-section{
             display: flex;
             align-items: center;
