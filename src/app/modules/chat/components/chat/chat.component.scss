@@ -315,6 +315,14 @@
         background-color: #f4f4f4;
       }
 
+      .p-dialog .p-dialog-content {
+        height: 80vh !important; // Puedes ajustar este valor según tu diseño
+        max-height: 80vh !important;
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+      }
+
     }
 
 
