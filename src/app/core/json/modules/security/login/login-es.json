@@ -1,6 +1,6 @@
 {
   "welcome_back": "¡Bienvenido de nuevo!",
-  "user_name": "Nombre de usuario",
+  "user_name": "Usuario",
   "password": "Contraseña",
   "login": "Iniciar sesión",
   "forgot_password": "¿Has olvidado tu contraseña?",
@@ -9,7 +9,7 @@
   "recovery_password": {
     "password_recovery": "Recuperación de contraseñas",
     "enter_email": "Introduzca su dirección de correo electrónico para recibir el código",
-    "user_name": "Nombre de usuario",
+    "user_name": "Usuario",
     "send": "Enviar",
     "enter_email_code": "Introduzca el código recibido y restablezca su contraseña",
     "enter_code": "Introduzca el código",

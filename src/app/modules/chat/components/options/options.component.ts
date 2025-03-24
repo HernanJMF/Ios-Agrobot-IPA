@@ -17,7 +17,7 @@ export class OptionsComponent  implements OnInit {
   documentList: any[] = [];
   languageList: any[] = [
     {name: 'Español', value: 'spanish'},
-    {name: 'Ingles', value: 'english'}
+    {name: 'Inglés', value: 'english'}
   ];
   selectedDocument: any = null;
   @Input() innerWidth: number = 0;
