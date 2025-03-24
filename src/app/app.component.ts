@@ -6,6 +6,7 @@ import { Platform } from '@ionic/angular';
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
+  providers: [ScreenOrientation] // <-- así también funciona
 })
 export class AppComponent implements OnInit {
   isLogged: boolean = false;
