@@ -63,10 +63,10 @@
             header="Vista Previa del Documento"
             [modal]="true"
             [(visible)]="documentPreview"
-            [style]="{ width: '50rem' }"
-            [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
-            [maximizable]="false"
-          >
+            [style]="{ width: '90vw', 'max-width': '600px', height: '70vh' }"
+            [contentStyle]="{ height: '70vh', 'max-height': '70vh', overflow: 'auto' }"
+            [breakpoints]="{ '1199px': '90vw' }"
+            >
 
             <!-- 🔹 Botón para recargar el documento -->
             <ng-template pTemplate="header">
@@ -83,7 +83,11 @@
               </div>
             </ng-template>
 
-            <app-document-preview [document]="selectedDocument"></app-document-preview>
+            <app-document-preview
+                                  [document]="selectedDocument"
+                                  style="height: 100%; display: flex; flex-direction: column;"
+                                  [document]="selectedDocument">
+            </app-document-preview>
 
           </p-dialog>
           </div>
