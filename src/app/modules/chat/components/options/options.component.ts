@@ -167,6 +167,10 @@ selectDocument(document: any) {
     }
   }
 
+  logout(){
+    this.chatService.logout();
+  }
+
   submitConfig() {
     this.selectConfig.emit({
       topic_name: this.formGroup.controls['topic'].value?.topic_name || "",

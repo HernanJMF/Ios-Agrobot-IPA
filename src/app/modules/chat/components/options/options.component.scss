@@ -21,7 +21,7 @@
       color: #087021;
       font-family: 'Montserrat Regular', sans-serif;
       font-weight: 300;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 }
 
@@ -96,6 +96,17 @@ ul{
 
 .document-button:hover {
   text-decoration: underline;
+}
+
+.p-button.logout{
+  padding: 8px;
+  font-size: 14px;
+  background-color: transparent;
+  color: #087021;
+  text-align: end;
+  border-radius: 8px;
+  font-family: 'Montserrat Semibold', sans-serif !important;
+
 }
 }
 

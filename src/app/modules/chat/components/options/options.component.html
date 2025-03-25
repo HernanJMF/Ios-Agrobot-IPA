@@ -1,6 +1,18 @@
 <div class="options-content">
   <!------------LOGO SECTION START------------>
   <div *ngIf="innerWidth < 768">
+    <div class="d-flex justify-content-end">
+      <button type="button"
+              class="logout"
+              pButton
+              icon="pi pi-sign-out"
+              [label]="this.formGroup.controls['language'].value.value == 'english' ? 'Log out' : 'Cerrar sesión'"
+              (click)="logout()">
+
+      </button>
+
+    </div>
+
     <div class="d-flex justify-content-center align-items-center">
       <img [src]="'../../../../../assets/images/logo-chat-documental.png'"
            width="200px" class="img-fluid" alt="">
@@ -103,6 +115,6 @@
   </div>
   <!------------BUTTON END START------------>
   <div class="version-text">
-    <span>v1.0.7</span>
+    <span>v1.0.8</span>
   </div>
 </div>
