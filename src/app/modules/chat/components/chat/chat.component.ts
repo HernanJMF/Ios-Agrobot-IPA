@@ -264,7 +264,7 @@ export class ChatComponent  implements OnInit {
       } else {
         this.chatAnalyzerService.reconnect();
       }
-      }, 8 * 60 * 1000); //  Cada 8 minutos
+      }, 9 * 60 * 1000); //  Cada 9 minutos
     }
 
     reconnectWebSocketIfNeeded() {
