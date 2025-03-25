@@ -18,7 +18,6 @@ export class AppComponent implements OnInit {
   ) {
     this.isLogged = this.userService.isAuthenticated;
 
-    // ✅ Única y robusta forma de bloquear la orientación
     this.platform.ready().then(() => {
       requestAnimationFrame(() => {
         try {
@@ -26,6 +25,20 @@ export class AppComponent implements OnInit {
         } catch (e) {
           console.warn('No se pudo bloquear orientación:', e);
         }
+
+        // 🔄 Escucha cambios de orientación y re-bloquea si es necesario
+        this.screenOrientation.onChange().subscribe(() => {
+          const current = this.screenOrientation.type;
+          console.log('Orientación actual:', current);
+
+          if (current.includes('landscape')) {
+            try {
+              this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+            } catch (e) {
+              console.warn('No se pudo re-bloquear orientación:', e);
+            }
+          }
+        });
       });
     });
   }
