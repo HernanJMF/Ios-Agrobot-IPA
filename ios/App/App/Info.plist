@@ -47,9 +47,15 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 
-	<!-- 🔒 Bloquear multitarea en iPad (obliga pantalla completa y respeta bloqueo de orientación) -->
+	<!-- 🔒 Bloquea multitarea (Split View) -->
 	<key>UIRequiresFullScreen</key>
 	<true/>
+
+	<!-- 📱 Solo instalar en iPhones -->
+	<key>UIDeviceFamily</key>
+	<array>
+		<integer>1</integer>
+	</array>
 
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
