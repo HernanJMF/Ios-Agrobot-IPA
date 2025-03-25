@@ -92,8 +92,7 @@
   <!------------FORM SECTION END------------>
 
   <!------------BUTTON SECTION START------------>
-  <div class="d-flex justify-content-center w-100 title"
-       *ngIf="innerWidth < 768">
+  <div class="d-flex justify-content-center w-100 title">
     <button type="button"
             class="p-button-text"
             pButton
@@ -102,7 +101,7 @@
             (click)="isValid ? submitConfig() : ''">
     </button>
   </div>
-  <div class="d-flex justify-content-center">
+  <div class="d-flex justify-content-center mt-2">
     <button type="button"
             class="logout"
             pButton
@@ -111,7 +110,6 @@
             (click)="logout()">
 
     </button>
-
   </div>
   <!------------BUTTON END START------------>
   <div class="version-text">
