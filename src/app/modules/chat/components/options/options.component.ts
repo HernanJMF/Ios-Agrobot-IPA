@@ -160,7 +160,7 @@ selectDocument(document: any) {
     }else{
       this.languageList = [
         {name: 'Español', value: 'spanish'},
-        {name: 'Ingles', value: 'english'}
+        {name: 'Inglés', value: 'english'}
       ];
       this.formGroup.controls['language'].setValue(this.languageList[0]);
       this.changeTopic(true);

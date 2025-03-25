@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-    <string>Agroseguro Chatbot</string>
+	<string>Agroseguro Chatbot</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -31,7 +31,7 @@
 		<string>armv7</string>
 	</array>
 
-	<!-- ✅ Orientaciones necesarias para pasar revisión en App Store -->
+	<!-- ✅ Orientaciones requeridas por Apple -->
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -46,6 +46,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+
+	<!-- 🔒 Bloquear multitarea en iPad (obliga pantalla completa y respeta bloqueo de orientación) -->
+	<key>UIRequiresFullScreen</key>
+	<true/>
 
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
