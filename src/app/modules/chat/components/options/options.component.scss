@@ -114,7 +114,6 @@ ul{
 
     .options-content{
       margin-top: 0px;
-
   }
 
 }
@@ -123,6 +122,19 @@ ul{
     .options-content{
         margin-top: 0px;
 
+
     }
+}
+
+@media only screen and (orientation: landscape) {
+  .options-content {
+    padding-left: 50px !important;
+  }
+}
+
+@media only screen and (orientation: portrait) {
+  .options-content {
+    padding-left: 16px !important; // Ajuste para vertical
+  }
 }
 
