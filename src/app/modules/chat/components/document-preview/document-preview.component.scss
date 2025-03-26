@@ -1,3 +1,16 @@
+.iframe-wrapper {
+  flex: 1;
+  height: 60%;
+  width: 100%;
+  overflow: auto;
+  display: flex;
+}
+
+iframe {
+  flex: 1;
+  width: 100% !important;
+  height: 100% !important;
+}
 .reload-container {
   display: flex;
   justify-content: center;

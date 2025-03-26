@@ -17,13 +17,15 @@ import { BackgroundMode } from '@awesome-cordova-plugins/background-mode/ngx';
 @NgModule({
   declarations: [AppComponent, LoadingComponent, MessagesComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, BrowserAnimationsModule, HttpClientModule, ProgressSpinnerModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy,  },
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    BackgroundMode,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true, // Esto permite que múltiples interceptores se registren
-    },
-    BackgroundMode],
+      multi: true,
+    }
+  ],
 
   bootstrap: [AppComponent],
 })

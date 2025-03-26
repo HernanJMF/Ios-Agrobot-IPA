@@ -17,7 +17,7 @@ export class OptionsComponent  implements OnInit {
   documentList: any[] = [];
   languageList: any[] = [
     {name: 'Español', value: 'spanish'},
-    {name: 'Ingles', value: 'english'}
+    {name: 'Inglés', value: 'english'}
   ];
   selectedDocument: any = null;
   @Input() innerWidth: number = 0;
@@ -105,24 +105,21 @@ export class OptionsComponent  implements OnInit {
       this.messageService.Notify(notification);
     }
   }
+
   changeTopic(clearTopic?: boolean): void {
-    if(this.innerWidth >= 768 &&  this.formGroup.controls['topic'].value){
-      this.selectConfig.emit({topic_name: this.formGroup.controls['topic'].value.topic_name, topic: this.formGroup.controls['topic'].value.topic, language: this.formGroup.controls['language'].value.value});
-      if(!clearTopic){
-        this.clearTopicEvent.emit();
-      }
+    const topicControl = this.formGroup.controls['topic'].value;
+
+    // Solo emitimos clear si se indicó explícitamente
+    if (topicControl && !clearTopic) {
+      this.clearTopicEvent.emit();
     }
-    if (this.innerWidth >= 768 && this.formGroup.controls['topic'].value) {
-      this.selectConfig.emit({
-        topic_name: this.formGroup.controls['topic'].value.topic_name,
-        topic: this.formGroup.controls['topic'].value.topic,
-        language: this.formGroup.controls['language'].value.value,
-      });
-      if (!clearTopic) {
-        this.clearTopicEvent.emit();
-      }
+
+    // Si hay un tópico seleccionado con ID, cargamos documentos relacionados
+    if (topicControl?.topic_id) {
+      this.loadTopicDocuments(topicControl.topic_id);
     }
   }
+
 
 selectDocument(document: any) {
     if (!document || !document.document_id) {
@@ -143,10 +140,10 @@ selectDocument(document: any) {
 }
 
   clearTopic(){
-    if(this.innerWidth >= 768){
+  //  if(this.innerWidth >= 768){
       this.selectConfig.emit({topic_name: "", topic_id: "", language: ""});
       this.clearTopicEvent.emit();
-    }
+   // }
   }
 
   changeLanguage(language: any){ //Cambia el idioma de la plataforma
@@ -160,11 +157,15 @@ selectDocument(document: any) {
     }else{
       this.languageList = [
         {name: 'Español', value: 'spanish'},
-        {name: 'Ingles', value: 'english'}
+        {name: 'Inglés', value: 'english'}
       ];
       this.formGroup.controls['language'].setValue(this.languageList[0]);
       this.changeTopic(true);
     }
+  }
+
+  logout(){
+    this.chatService.logout();
   }
 
   submitConfig() {

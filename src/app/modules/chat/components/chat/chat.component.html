@@ -1,8 +1,7 @@
 <div class="row m-0">
   <div class="col-12 p-0 chat-section">
-    <app-user-bar (selectStepBack)="stepBack()"></app-user-bar>
   <!------------CHAT SECTION START------------>
-    <!------------Chat navbar section start------------
+    <!------------Chat navbar section start------------>
     <div class="user-bar">
         <div class="information-section">
             <div class="bot-information">
@@ -16,7 +15,7 @@
             <i class="pi pi-ellipsis-v option-icon" (click)="op.toggle($event)"></i>
         </div>
     </div>
-    ----------Chat navbar section end------------>
+    <!----------Chat navbar section end------------>
     <!------------body chat section start------------>
     <div class="chat-body">
         <div class="scroll-section" #sp>
@@ -64,10 +63,10 @@
             header="Vista Previa del Documento"
             [modal]="true"
             [(visible)]="documentPreview"
-            [style]="{ width: '50rem' }"
-            [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
-            [maximizable]="false"
-          >
+            [style]="{ width: '90vw', 'max-width': '600px', height: '70vh' }"
+            [contentStyle]="{ height: '70vh', 'max-height': '70vh', overflow: 'auto' }"
+            [breakpoints]="{ '1199px': '90vw' }"
+            >
 
             <!-- 🔹 Botón para recargar el documento -->
             <ng-template pTemplate="header">
@@ -84,7 +83,11 @@
               </div>
             </ng-template>
 
-            <app-document-preview [document]="selectedDocument"></app-document-preview>
+            <app-document-preview
+                                  [document]="selectedDocument"
+                                  style="height: 100%; display: flex; flex-direction: column;"
+                                  [document]="selectedDocument">
+            </app-document-preview>
 
           </p-dialog>
           </div>
@@ -338,7 +341,7 @@
 <p-overlayPanel #op styleClass="ref">
     <ng-template pTemplate="content">
         <div class="card-menu-body-light">
-            <div class="card-menu-top" (click)="stepBack()" *ngIf="innerWidth < 768">
+            <div class="card-menu-top" (click)="stepBack()">
                 <div class="icon mr-3">
                     <i  class="newtoms-redo-icon option-icon"></i>
                 </div>

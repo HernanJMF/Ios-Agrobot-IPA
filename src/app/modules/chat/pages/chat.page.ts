@@ -58,11 +58,11 @@ export class ChatPage implements OnInit {
     }
 
     this.innerWidth = window.innerWidth;
-    if (this.innerWidth < 768) {
-      this.step = 1;
-    } else {
-      this.step = -1;
-    }
+  //  if (this.innerWidth < 768) {
+    //  this.step = 1;
+   // } else {
+    //  this.step = -1;
+   // }
   }
 
   loadRouteParams() {
@@ -108,9 +108,9 @@ export class ChatPage implements OnInit {
           this.selectedDocument = null;
       }
 
-      if(this.innerWidth < 768){
+    //  if(this.innerWidth < 768){
           this.step = 2;
-      }
+      //}
   }
 
   onDocumentSelected(event: any) {
@@ -144,11 +144,11 @@ export class ChatPage implements OnInit {
       if (newWidth !== this.innerWidth) {
           this.innerWidth = newWidth;
 
-          if (this.innerWidth < 768 && this.step !== 2) {
-              this.step = this.topic_id.length > 0 ? this.step : 1;
-          } else {
-              this.step = -1;
-          }
+          // if (this.innerWidth < 768 && this.step !== 2) {
+          //     this.step = this.topic_id.length > 0 ? this.step : 1;
+          // } else {
+          //     this.step = -1;
+          // }
       }
   }
 
