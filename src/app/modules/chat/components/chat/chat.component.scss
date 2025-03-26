@@ -93,7 +93,7 @@
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
-    height: calc(-56px + 100%);
+    height: calc(-52px + 100%);
     flex-direction: column;
     justify-content: space-between;
     display: flex;
@@ -444,6 +444,12 @@
       bottom: 8px;
   }
 
+}
+
+@media only screen and (orientation: landscape) {
+  .chat-body .input-section {
+    margin-bottom: 16px !important; // más pequeño en horizontal
+  }
 }
 
 ::ng-deep {
