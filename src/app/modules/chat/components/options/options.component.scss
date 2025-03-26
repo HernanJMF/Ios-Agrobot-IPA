@@ -5,7 +5,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between; // ✅ Esto reparte el espacio entre hijos
-  padding: 46px;
+  padding: 16px;
+  padding-left: 50px;
   position: relative;
   overflow-x: auto;
   font-family: 'Montserrat Regular', sans-serif;
