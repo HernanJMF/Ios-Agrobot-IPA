@@ -99,8 +99,8 @@
     display: flex;
     flex-grow: 1;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch; // Permite scroll suave en iOS
-    padding-bottom: env(safe-area-inset-bottom); // Respeta el área segura en iOS
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: env(safe-area-inset-bottom);
 
     .scroll-section{
         overflow-y: auto;
