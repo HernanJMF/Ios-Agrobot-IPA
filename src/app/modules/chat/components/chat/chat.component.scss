@@ -296,25 +296,32 @@
     }
 
       ::ng-deep{
-      .bot-message-box table {
-        max-width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-        overflow-x: auto;
-        display: block;
-      }
+        .bot-message-box {
+          white-space: normal; // o pre-wrap si quieres mantener saltos
+        }
+          .scroll-table-wrapper {
+            overflow-x: auto;
+            width: 100%;
+          }
 
+          .scroll-table-wrapper table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            /* 👇 NO display: block aquí */
+          }
 
-      .bot-message-box th,
-      .bot-message-box td {
-        border: 2px solid #f4f4f4;
-        padding: 8px;
-        text-align: left;
-      }
+          .scroll-table-wrapper th,
+          .scroll-table-wrapper td {
+            border: 2px solid #f4f4f4;
+            padding: 8px 12px;
+            line-height: 1.4;
+          }
 
-      .bot-message-box th {
-        background-color: #f4f4f4;
-      }
+          .scroll-table-wrapper th {
+            background-color: #f4f4f4;
+          }
+
 
       .p-dialog .p-dialog-content {
         height: 80vh !important; // Puedes ajustar este valor según tu diseño
@@ -322,6 +329,10 @@
         overflow: auto;
         display: flex;
         flex-direction: column;
+      }
+      .bot-message-box p {
+        margin: 4px 0;
+        line-height: 1.4; // Puedes ajustar a 1.2 si quieres aún más compacto
       }
 
     }

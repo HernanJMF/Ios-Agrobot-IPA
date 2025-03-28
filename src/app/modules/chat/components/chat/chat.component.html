@@ -98,7 +98,7 @@
                     <span class="date">{{this.language == 'english' ? 'Sent at' : 'Enviado a las'}} {{formatDate(message.interaction_date) | date: 'h:mm a'}}</span>
                     <div [ngClass]="{'user-information': message.talker == 'HUMAN', 'bot-information': message.talker == 'AI'}">
                         <span class="name">
-                            {{message.talker == 'HUMAN' ? "You" : "Agrobot"}}
+                          {{ message.talker === 'HUMAN' ? (language === 'english' ? 'You' : 'Tú') : 'Agrobot' }}
                         </span>
                         <div class="circle" *ngIf="message.talker == 'HUMAN'"><i class="newtoms-user-icon"></i></div>
                         <div class="circle" *ngIf="message.talker == 'AI'"><i class="newtoms-bot-icon"></i></div>
@@ -114,7 +114,7 @@
                                 (click)="copyQuestionToClipboard(message.message,i)">
                             </i>
                         </div>
-                        <span [innerHTML]="message.talker === 'AI' ? formatMessage(message.message) : message.message">{{message.message}}</span>
+                        <div [innerHTML]="message.talker === 'AI' ? formatMessage(message.message) : message.message">{{message.message}}</div>
                         <div *ngIf="message.talker == 'AI' && message.references && message.references.length > 0 && !message.isStreaming">
                           <div class="info-title"><span><strong>{{ language === 'english' ? 'More information:\n' : '\n Más Información:\n' }}</strong></span></div>
                           <div class="row m-0">

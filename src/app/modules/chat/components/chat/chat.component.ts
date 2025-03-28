@@ -375,22 +375,138 @@ sendMessage() {
 
   //Copia la pregunta y respuesta al portapapeles
   copyQuestionToClipboard(message: string, index: number) {
-    // Obtiene el mensaje anterior (pregunta) y el mensaje actual (respuesta)
     const previousMessage = this.messages[index - 1]?.message || '';
     const currentMessage = message || '';
+    const references = this.messages[index]?.references || [];
 
-    // Combina la pregunta y la respuesta en un solo mensaje
-    const combinedMessage = `${previousMessage}\n\n${currentMessage}`;
+    // Contenido en HTML
+    let html = `
+      <div>
+        <strong>Pregunta:</strong>
+        <p>${previousMessage}</p>
+        <strong>Respuesta:</strong>
+        <div>${this.formatHtmlTables(currentMessage)}</div>
+    `;
 
-    // Copia el mensaje combinado al portapapeles
-    this.clipboardService.copy(combinedMessage);
-    const notification: ToastNotification = {
-      title: this.language == 'english' ? 'The answer has been copied to the clipboard' : 'La respuesta ha sido copiada al portapapeles',
-      content: '',
-      success_status: true,
-    };
-    this.messageService.Notify(notification);
+    if (references.length > 0) {
+      html += `<div><strong>Más información:</strong><ul>`;
+      references.forEach((ref: any, idx: number) => {
+        html += `<li>${idx + 1}. Documento: ${ref.document}, Página(s): ${ref.pages.join(', ')}</li>`;
+      });
+      html += `</ul></div>`;
+    }
+
+    html += '</div>';
+
+    // También generamos versión texto por compatibilidad
+    let text = `${previousMessage}\n\n${message}`;
+    if (references.length > 0) {
+      text += `\n\nMás información:\n`;
+      references.forEach((ref: any, idx: number) => {
+        text += `${idx + 1}. Documento: ${ref.document}, Página(s): ${ref.pages.join(', ')}\n`;
+      });
+    }
+
+    // HTML y texto al portapapeles
+    const blobHtml = new Blob([html], { type: 'text/html' });
+    const blobText = new Blob([text], { type: 'text/plain' });
+
+    const data = [new ClipboardItem({
+      'text/html': blobHtml,
+      'text/plain': blobText
+    })];
+
+    navigator.clipboard.write(data).then(() => {
+      const notification: ToastNotification = {
+        title: this.language == 'english'
+          ? 'The answer and its references have been copied to the clipboard'
+          : 'La respuesta y sus referencias han sido copiadas al portapapeles',
+        content: '',
+        success_status: true,
+      };
+      this.messageService.Notify(notification);
+    }).catch(err => {
+      console.error('Clipboard error:', err);
+      // fallback en texto plano si falla
+      this.clipboardService.copy(text);
+    });
   }
+
+  formatHtmlTables(text: string): string {
+    const lines = text.split('\n');
+    let result = '';
+    let tableBlock: string[] = [];
+    let insideTable = false;
+
+    const flushTable = () => {
+      if (tableBlock.length < 2) return tableBlock.join('\n'); // no es una tabla válida
+      const headers = tableBlock[0].split('|').map(h => h.trim()).filter(Boolean);
+      const body = tableBlock.slice(2); // saltamos separador
+
+      let html = `<table border="1" cellpadding="5" cellspacing="0" style="border-collapse:collapse;margin-top:10px;">`;
+      html += `<thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>`;
+
+      body.forEach(row => {
+        const cells = row.split('|').map(c => c.trim()).filter(Boolean);
+        html += `<tr>${cells.map(c => `<td>${c}</td>`).join('')}</tr>`;
+      });
+
+      html += `</tbody></table>`;
+      return html;
+    };
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+
+      if (line.startsWith('|') && line.endsWith('|')) {
+        if (!insideTable) {
+          insideTable = true;
+          tableBlock = [];
+        }
+        tableBlock.push(line);
+      } else {
+        if (insideTable) {
+          result += flushTable();
+          tableBlock = [];
+          insideTable = false;
+        }
+
+        if (line === '---') {
+          result += '<hr>';
+        } else {
+          result += `<p>${line}</p>`;
+        }
+      }
+    }
+
+    // Si terminó con una tabla
+    if (insideTable && tableBlock.length > 0) {
+      result += flushTable();
+    }
+
+    return result;
+  }
+
+  ngAfterViewChecked() {
+    const tables = document.querySelectorAll('.bot-message-box table');
+
+    tables.forEach((table) => {
+      const htmlTable = table as HTMLElement;
+      const parent = htmlTable.parentElement;
+
+      // Si ya está envuelto, evitar duplicarlo
+      if (parent && parent.classList.contains('scroll-table-wrapper')) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('scroll-table-wrapper');
+      wrapper.style.overflowX = 'auto';
+      wrapper.style.width = '100%';
+
+      parent?.insertBefore(wrapper, htmlTable);
+      wrapper.appendChild(htmlTable);
+    });
+  }
+
 
   onDocumentClick() {
     // Aquí puedes abrir un modal, mostrar más información, etc.
